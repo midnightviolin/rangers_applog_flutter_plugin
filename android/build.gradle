@@ -30,6 +30,10 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 28
 
+    if (project.android.hasProperty("namespace")) {
+        namespace = "com.bytedance.rangers_applog_flutter_plugin"
+    }
+
     defaultConfig {
         minSdkVersion 16
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
