@@ -1,0 +1,12 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "rangers_applog_flutter_plugin": "file:../har/rangers_applog_flutter_plugin.har",
+    "shared_preferences_ohos": "file:../har/shared_preferences_ohos.har"
+  }
+}

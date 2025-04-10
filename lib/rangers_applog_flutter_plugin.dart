@@ -1,17 +1,24 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter/services.dart';
 
 import 'data_observer_manager.dart';
 
 class RangersApplogFlutterPlugin {
-
   static const MethodChannel _channel =
       const MethodChannel('rangers_applog_flutter_plugin');
 
-/* 提示：可以到[Rangers官网](https://datarangers.com.cn/)查看更详细的文档 
+/* 提示：可以到[Rangers官网](https://datarangers.com.cn/)查看更详细的文档
  * Note: Refer to more detailed docs at https://datarangers.com/
 */
+
+  static Map<String, dynamic> _initParams = new HashMap();
+
+  static void addInitParams(Map<String, dynamic> params) {
+    _initParams.addAll(params);
+  }
+
   /// Init SDK，expected to be called as early as possible.
   /// Note: You can also choose to init SDK in native side (say, using Java or Objective-C). If so, this method is not expected to be called.
   /// @param appid  String AppID of Rangers.
@@ -23,16 +30,34 @@ class RangersApplogFlutterPlugin {
       bool enableEncrypt, bool enableLog, String? host) {
     assert(appid.isNotEmpty);
     assert(channel.isNotEmpty);
+    if (host != null && host.isEmpty) {
+      host = null;
+    }
+    bool autoStart = true;
+    if (_initParams['autoStart'] != null) {
+      autoStart = _initParams['autoStart'];
+    }
     _channel.invokeMethod('initRangersAppLog', {
       "appid": appid,
       "channel": channel,
       "enable_ab": enableAb,
       "enable_encrypt": enableEncrypt,
       "enable_log": enableLog,
-      "host": host
+      "host": host,
+      "region": _initParams['region'],
+      "auto_start": autoStart,
+      "service_vendor":_initParams['service_vendor']
     });
 
     DataObserverManager.init();
+  }
+
+  static void toast(String message){
+    _channel.invokeMethod('toast',{'message':message});
+  }
+
+  static void start(){
+    _channel.invokeMethod('start');
   }
 
   /// get device_id

@@ -1,0 +1,12 @@
+{
+  "name": "rangers_applog_flutter_plugin",
+  "version": "1.0.0",
+  "description": "rangers applog flutter plugin",
+  "main": "index.ets",
+  "license": "Commercial license licensed under Volcanoengine",
+  "author": "Beijing Volcano Engine Technology Ltd.",
+  "dependencies": {
+    "@ohos/flutter_ohos": "file:./har/flutter.har",
+    "@volcengine/applog": "1.3.0-rc"
+  }
+}

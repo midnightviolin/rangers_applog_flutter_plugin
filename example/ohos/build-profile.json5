@@ -1,0 +1,52 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "/Users/bytedance/.ohos/config/default_ohos_5Hj4kyQiQCTHx3mt9xxa3rQZ8PctG83Af22mRBBTdtk=.cer",
+          "storePassword": "0000001B7EC770F82513CAEAECB6276A3C589B6082D26A1649608C91B7877533C3E18425A749D65CA9AA3F",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B9BD3DDF11427B6CDF9758346E3A306350565D573F38152B541AFC089239DFF51199FABEA5044A4",
+          "profile": "/Users/bytedance/.ohos/config/default_ohos_5Hj4kyQiQCTHx3mt9xxa3rQZ8PctG83Af22mRBBTdtk=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "/Users/bytedance/.ohos/config/default_ohos_5Hj4kyQiQCTHx3mt9xxa3rQZ8PctG83Af22mRBBTdtk=.p12"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "useNormalizedOHMUrl": true
+          },
+          "externalNativeOptions": {
+            "abiFilters": [
+              "arm64-v8a",
+              "x86_64"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}

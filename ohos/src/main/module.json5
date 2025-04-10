@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "rangers_applog_flutter_plugin",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

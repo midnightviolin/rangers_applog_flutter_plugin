@@ -1,0 +1,68 @@
+/*
+* Copyright (c) 2023 Hunan OpenValley Digital Industry Development Co., Ltd.
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+{
+  "module": {
+    "name": "entry",
+    "type": "entry",
+    "description": "$string:module_desc",
+    "mainElement": "EntryAbility",
+    "deviceTypes": [
+      "phone"
+    ],
+    "deliveryWithInstall": true,
+    "installationFree": false,
+    "pages": "$profile:main_pages",
+    "abilities": [
+      {
+        "name": "EntryAbility",
+        "srcEntry": "./ets/entryability/EntryAbility.ets",
+        "description": "$string:EntryAbility_desc",
+        "icon": "$media:icon",
+        "label": "$string:EntryAbility_label",
+        "startWindowIcon": "$media:icon",
+        "startWindowBackground": "$color:start_window_background",
+        "exported": true,
+        "skills": [
+          {
+            "entities": [
+              "entity.system.home"
+            ],
+            "actions": [
+              "action.system.home"
+            ]
+          }
+        ]
+      }
+    ],
+    "requestPermissions": [
+      {
+        // 网络权限，必要添加
+        "name": "ohos.permission.INTERNET"
+      },
+      {
+        // wifi 信息获取，必要添加
+        "name": "ohos.permission.GET_WIFI_INFO"
+      },
+      {
+        // 获取网络信息，必要添加
+        "name": "ohos.permission.GET_NETWORK_INFO"
+      },
+      {
+        // 资产持久化，建议添加，与 deviceId 生成相关，未声明会导致卸载重装 deviceId 变化
+        "name": "ohos.permission.STORE_PERSISTENT_DATA"
+      }
+    ]
+  }
+}

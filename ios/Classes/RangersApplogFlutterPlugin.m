@@ -23,6 +23,7 @@ static inline id setNSNullToNil(id value, Class target){
 
 @property (nonatomic, strong) FlutterEventSink eventSink;
 @property (nonatomic, strong) NSMutableSet *eventCache;
+@property (nonatomic, strong) BDAutoTrackConfig *config;
 
 @end
 
@@ -72,34 +73,53 @@ static inline id setNSNullToNil(id value, Class target){
         NSNumber *enableEncrypt = setNSNullToNil([arguments valueForKey:@"enable_encrypt"], [NSNumber class]);
         NSNumber *enableDebugLog = setNSNullToNil([arguments valueForKey:@"enable_log"], [NSNumber class]);
         NSString *host = setNSNullToNil([arguments valueForKey:@"host"], [NSString class]);
-        
-        BDAutoTrackConfig *config = [BDAutoTrackConfig configWithAppID:appID];
+        NSString *region = setNSNullToNil([arguments valueForKey:@"region"], [NSString class]);
+        NSNumber *autoStart = setNSNullToNil([arguments valueForKey:@"auto_start"], [NSNumber class]);
+        NSString *serviceVendor = setNSNullToNil([arguments valueForKey:@"service_vendor"], [NSString class]);
+        self.config = [BDAutoTrackConfig configWithAppID:appID launchOptions:nil];
         if ([channel isKindOfClass:NSString.class] && channel.length > 0) {
-            config.channel = channel;
+            self.config.channel = channel;
         }
-        config.logNeedEncrypt = [enableEncrypt boolValue];
-        config.abEnable = [enableAB boolValue];
-        config.showDebugLog = [enableDebugLog boolValue];
-        config.serviceVendor = BDAutoTrackServiceVendorCN;
+        self.config.logNeedEncrypt = [enableEncrypt boolValue];
+        self.config.abEnable = [enableAB boolValue];
+        self.config.showDebugLog = [enableDebugLog boolValue];
+        if(serviceVendor){
+            self.config.serviceVendor = serviceVendor;
+        }else{
+            self.config.serviceVendor = @"";
+        }
+        
 #if DEBUG
-        config.showDebugLog = YES;
-        config.logger = ^(NSString * log) {
+        self.config.showDebugLog = YES;
+        self.config.logger = ^(NSString * log) {
             NSLog(@"flutter-plugin applog %@",log);
         };
+        self.config.devToolsEnabled = YES;
 #endif
         if ([host isKindOfClass:NSString.class] && host.length > 0) {
             [BDAutoTrack setRequestHostBlock:^NSString * _Nullable(BDAutoTrackServiceVendor vendor, BDAutoTrackRequestURLType requestURLType) {
                 return host;
             }];
         }
-        [BDAutoTrack startTrackWithConfig:config];
+        if ([region isKindOfClass:NSString.class] && region.length > 0) {
+            [BDAutoTrack setAppRegion:region];
+        }
+        if ([autoStart boolValue]) {
+            [BDAutoTrack startTrackWithConfig:self.config];
+        }
         result(nil);
+    }
+    else if ([methodName isEqualToString:@"start"]) {
+        if (!self.config) {
+            return;
+        }
+        [BDAutoTrack startTrackWithConfig:self.config];
     }
     else if ([methodName isEqualToString:@"onEventV3"]) {
         // NSLog(@"%@", call.arguments);
         NSString *event = setNSNullToNil([arguments valueForKey:@"event"], [NSString class]);
-        NSDictionary *param = [arguments valueForKey:@"param"];
-        BOOL ret = [[BDAutoTrack sharedTrack] eventV3:event params:param];
+        NSDictionary *param = setNSNullToNil([arguments valueForKey:@"param"],[NSDictionary class]);
+        [[BDAutoTrack sharedTrack] eventV3:event params:param];
         result(nil);
     }
     else if ([methodName isEqualToString:@"getDeviceId"]) {

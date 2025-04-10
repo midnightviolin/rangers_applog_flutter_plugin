@@ -1,3 +1,13 @@
+## 1.4.1
+* 鸿蒙系统适配
+* 支持海外版本dart初始化
+* 支持数组格式的埋点参数
+* 优化iOS埋点参数为空导致崩溃的问题
+* 增加start api，支持init和start分开调用
+
+## 1.4.0
+* 支持全埋点采集
+
 ## 1.3.0
 * iOS & Android: add support of the following method(s):
   * receiveABTestConfigStream

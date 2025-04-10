@@ -1,0 +1,25 @@
+{
+  "modelVersion": "5.0.0",
+  "name": "all_platform_flutter_demo",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "@ohos/flutter_ohos": "file:./har/flutter.har",
+    "@volcengine/applog_devtools": "file:./har/1_3_0/platform=openHarmony/applogx_devtools.har",
+    "@volcengine/applog": "file:./har/1_3_0/platform=openHarmony/applogx.har",
+    "pako": "^2.1.0"
+  },
+  "devDependencies": {
+    "@ohos/hypium": "1.0.6"
+  },
+  "overrides": {
+    "@ohos/flutter_ohos": "file:./har/flutter.har",
+    "rangers_applog_flutter_plugin": "file:./har/rangers_applog_flutter_plugin.har",
+    "@ohos/flutter_module": "file:./entry",
+    "shared_preferences_ohos": "file:./har/shared_preferences_ohos.har",
+    "@volcengine/applog": "file:./har/1_3_0/platform=openHarmony/applogx.har"
+  }
+}
