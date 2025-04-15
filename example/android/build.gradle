@@ -1,21 +1,18 @@
 buildscript {
     repositories {
         google()
-        mavenCentral()
+        jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.2'
+        classpath 'com.android.tools.build:gradle:3.2.1'
     }
 }
 
 allprojects {
     repositories {
         google()
-        mavenCentral()
-        maven{
-            url 'https://artifact.bytedance.com/repository/Volcengine/'
-        }
+        jcenter()
     }
 }
 

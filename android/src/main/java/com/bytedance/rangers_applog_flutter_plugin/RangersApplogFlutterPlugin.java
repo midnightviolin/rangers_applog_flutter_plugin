@@ -10,9 +10,11 @@ import com.bytedance.applog.ILogger;
 import com.bytedance.applog.InitConfig;
 import com.bytedance.applog.UriConfig;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
@@ -40,7 +42,6 @@ public class RangersApplogFlutterPlugin implements FlutterPlugin {
         private static final String TAG = "RangersApplogFlutter";
 
         private static final String FlutterPluginMethodInitRangersApplog = "initRangersAppLog";
-        private static final String FlutterPluginMethodStart = "start";
         private static final String FlutterPluginMethodGetDeviceId = "getDeviceId";
         private static final String FlutterPluginMethodGetAbSdkVersion = "getAbSdkVersion";
         private static final String FlutterPluginMethodGetABTestConfigValueForKey = "getABTestConfigValueForKey";
@@ -66,14 +67,13 @@ public class RangersApplogFlutterPlugin implements FlutterPlugin {
             switch (call.method) {
                 case FlutterPluginMethodInitRangersApplog:
                     Log.e(TAG, "appid=" + (String) call.argument("appid") + ", channel=" + (String) call.argument("channel") +
-                            ", enableAb=" + (Boolean) call.argument("enable_ab") +
+                            ", enableAb=" + (Boolean) call.argument("enableAb") +
                             ", enable_encrypt=" + (Boolean) call.argument("enable_encrypt") +
                             ", enable_log=" + (Boolean) call.argument("enable_log") +
-                            ", host=" + (String) call.argument("host") + ", region=" + (String) call.argument("region") + ", auto_start=" + (Boolean) call.argument("auto_start"));
+                            ", host=" + (String) call.argument("host"));
                     InitConfig initConfig = new InitConfig((String) call.argument("appid"), (String) call.argument("channel"));
-                    initConfig.setAutoStart((Boolean) call.argument("auto_start"));
+                    initConfig.setAutoStart(true);
                     initConfig.setAbEnable((Boolean) call.argument("enable_ab"));
-                    initConfig.setRegion(call.argument("region"));
                     AppLog.setEncryptAndCompress((Boolean) call.argument("enable_encrypt"));
                     if ((Boolean) call.argument("enable_log")) {
                         initConfig.setLogger(new ILogger() {
@@ -87,9 +87,6 @@ public class RangersApplogFlutterPlugin implements FlutterPlugin {
                         initConfig.setUriConfig(UriConfig.createByDomain((String) call.argument("host"), null));
                     }
                     AppLog.init(context.getApplicationContext(), initConfig);
-                    break;
-                case FlutterPluginMethodStart:
-                    AppLog.start();
                     break;
                 case FlutterPluginMethodGetDeviceId:
                     result.success(AppLog.getDid());
@@ -129,7 +126,6 @@ public class RangersApplogFlutterPlugin implements FlutterPlugin {
                     break;
                 case FlutterPluginMethodRemoveHeaderInfo:
                     AppLog.removeHeaderInfo((String) call.argument("key"));
-                    break;
                 default:
                     result.notImplemented();
                     break;
@@ -137,13 +133,15 @@ public class RangersApplogFlutterPlugin implements FlutterPlugin {
         }
 
         private JSONObject getJsonFromMap(MethodCall call, String param) {
-            try {
-                HashMap<String, Object> paramMap = call.argument(param);
-                return new JSONObject(paramMap);
-            }catch (Exception e){
-                e.printStackTrace();
+            HashMap<String, Object> paramMap = (HashMap<String, Object>) call.argument(param);
+            JSONObject paramJson = new JSONObject();
+            for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
+                try {
+                    paramJson.put(entry.getKey(), entry.getValue());
+                } catch (JSONException e) {
+                }
             }
-            return null;
+            return paramJson;
         }
     }
 
